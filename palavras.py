@@ -70,16 +70,16 @@ INTENSIFICADORES_NEGATIVOS = [
 
 # Determinam sentimentos positivos
 PALAVRAS_BOAS = [
-    "legal", "bom", "otimo", "excelente", "incrivel", "fantastico",
-    "maravilhoso", "eficiente", "divertido", "agradavel", "positivo",
-    "impressionante", "top", "genial", "show", "confiavel", "surpreendente",
+    "sim", "legal", "bom", "otimo", "otima", "excelente", "incrivel", "fantastico",
+    "maravilhoso", "maravilhosa", "eficiente", "divertido", "divertida", "agradavel", "positivo",
+    "positiva", "impressionante", "top", "genial", "show", "confiavel", "surpreendente",
     "brilhante"
 ]
 
 # Determinam sentimentos negativos
 PALAVRAS_RUINS = [
     "ruim", "terrivel", "abominavel", "fraco", "inutil", "incompetencia",
-    "horrivel", "pessimo", "decepcionante", "lento", "mentiroso", "enganoso", 
-    "insuportavel", "ridiculo", "desagradavel", "negativo", "fracasso", "problematico",
-    "demorado", "mal", "mau", "descaso"
+    "horrivel", "pessimo", "pessima", "decepcionante", "lento", "mentiroso", "enganoso", 
+    "insuportavel", "ridiculo", "ridicula", "desagradavel", "negativo", "negativa", "fracasso", "problematico",
+    "problematica", "demorado", "demorada", "mal", "mau", "descaso", "nao", "lamentavel"
 ]
