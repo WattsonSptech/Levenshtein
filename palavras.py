@@ -1,23 +1,36 @@
-from emojis import EMOJIS
+from emojis import EMOJIS, IMAGENS_EMOJIS
 
 PALAVRAS_BAIXO_CALAO = [
     "merda", "porra", "caralho", "bosta", "cu", "puta", "desgraca", "viado", "corno",
-    "cacete", "imundo", "arrombado", "idiota", "bunda", "fodase", "foda-se", "fudido",
-    "lixo", "buceta", "pinto", "pau", "penis", "fuder"
+    "cacete", "imundo", "imunda", "arrombado", "idiota", "bunda", "fodase", "foda-se", "fudido",
+    "lixo", "buceta", "pinto", "pau", "penis", "fuder", "ovo", "energumeno", "caguei",
+    "fetido", "bossal", "boboca", "safado", "safada", "vadia", "piranha", "tonto", "tanso",
+    "panaca", "filho", "bolas"
 ]
 
 ABREVIACOES = [
-    "vc", "pq", "blz", "mt", "td", "qq", "vlw", "flw", "tbm", "kd", "hj", "pprt", "msg",
-    "zap", "pqp", "fdp", "krl", "slk", "bct", "tmnc", "pnc"
+    "vc", "vcs", "pq", "blz", "mt", "td", "qq", "vlw", "flw", "tbm", "kd", "hj", "pprt", "msg",
+    "msgs", "zap", "pqp", "fdp", "krl", "slk", "bct", "tmnc", "pnc", "hrs", "hs"
 ]
 
-VAZIO = [' ', '\t', '\r', '\n', '\v', '\f']
+VAZIO = ['', ' ', '\t', '\r', '\n', '\v', '\f']
 
 SIMBOLOS = [',', '.', '?', '!', ':', ';', '(', ')', '{', '}', '[', ']', '/', '\\', '+', '-', '*', '%', '&', '#', '@', '|']
 
-NUMEROS = ['0123456789']
+NUMEROS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-PREPOSICOES = ['a', 'ante', 'apos', 'ate', 'com', 'contra', 'de', 'desde', 'em', 'entre', 'para', 'perante', 'por', 'sem', 'sob', 'sobre', 'tras']
+PREPOSICOES = ['a', 'ante', 'apos', 'ate', 'com', 'contra', 'de', 'do', 'da', 'dos', 'das', 'desde', 'em', 'no', 'na', 'nos', 'nas', 'entre', 'para', 'perante', 'por', 'sem', 'sob', 'sobre', 'tras']
+
+PRONOMES = [
+    "eu", "tu", "ele", "ela", "nos", "vos", "eles", "elas", 
+    "meu", "minha", "meus", "minhas", "teu", "tua", "teus", "tuas", "seu", "sua", "seus", "suas", "nosso", "nossa", "nossos", "nossas", "vosso", "vossa", "vossos", "vossas" 
+    "este", "essa", "aquele", "aqui", "ali", "la",
+    "quem", "qual", "que", "onde", "quando", "como",
+    "o qual", "cujo",
+    "algum", "bastante", "outro", "todo", "nenhum", "cada", "ninguem", "algo",
+    "me", "te", "se",
+    "vossa", "majestade", "excelencia", "senhoria"
+]
 
 ARTIGOS = ["o", "a", "os", "as", "um", "uma", "uns", "umas"]
 
@@ -25,7 +38,7 @@ CONECTIVOS = [
     "alem", "disso", "ademais", "outrossim",
     "exceto", "mas", "contudo", "todavia", "entretanto", "embora",
     "certamente", "indubitavelmente", "certeza", "duvida", "inegavelmente",
-    "com", "fim", "intuito",
+    "com", "fim", "intuito", "que", "e", "ja", "tem",
     "suma", "portanto", "assim", "logo", "desse", "modo",
     "porque", "pois", "visto", "portanto",
     "principio", "priori", "sobretudo", "primeiramente",
@@ -39,7 +52,7 @@ CONECTIVOS = [
     "ou", "quer", "ora"
 ]
 
-PALAVRAS_NAO_UTILIZADAS = [(EMOJIS[i]['emoji'] for i in range(len(EMOJIS))), PALAVRAS_BAIXO_CALAO, ABREVIACOES, VAZIO, SIMBOLOS, NUMEROS, PREPOSICOES, ARTIGOS, CONECTIVOS]
+PALAVRAS_NAO_UTILIZADAS = IMAGENS_EMOJIS + PRONOMES + PALAVRAS_BAIXO_CALAO + ABREVIACOES + VAZIO + SIMBOLOS + NUMEROS + PREPOSICOES + ARTIGOS + CONECTIVOS
 
 # Caso a palavra seja um intensificador, deve aumentar o valor da variável 'multiplicador' do arquivo main em +1
 # exemplos:
@@ -68,5 +81,5 @@ PALAVRAS_RUINS = [
     "ruim", "terrivel", "abominavel", "fraco", "inutil", "incompetencia",
     "horrivel", "pessimo", "decepcionante", "lento", "mentiroso", "enganoso", 
     "insuportavel", "ridiculo", "desagradavel", "negativo", "fracasso", "problematico",
-    "demorado", "mal", "mau"
+    "demorado", "mal", "mau", "descaso"
 ]

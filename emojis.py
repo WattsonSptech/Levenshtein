@@ -1754,3 +1754,5 @@ EMOJIS = [
     {'emoji': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'descricao': 'Bandeira da Escócia', 'codigo': 'U+E0062'},
     {'emoji': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'descricao': 'Bandeira do País de Gales', 'codigo': 'U+E0073'}
 ]
+
+IMAGENS_EMOJIS = [i['emoji'] for i in EMOJIS] 
