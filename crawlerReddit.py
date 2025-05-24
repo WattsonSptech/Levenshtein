@@ -1,33 +1,58 @@
 from playwright.sync_api import sync_playwright
+import time
 
-posts = []
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=False)
-    page = browser.new_page()
+def get_post_data(url:str)-> dict:
+    post_data = {}
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
 
-    for pagina in range(1,5):
-        url = f'https://www.reddit.com/r/saopaulo/search/?q=enel&restrict_sr=1&sort=new'
         page.goto(url)
         page.wait_for_timeout(3000) 
 
-        cards = page.locator("a.absolute.inset-0")  
-        count = cards.count()
+        tittle = page.locator('h1#post-title-t3_172eh8n').inner_text()
+        description = page.locator("div#t3_172eh8n-post-rtjson-content")
+        post_data['titulo'] = tittle
+        for text in range(description.count()):
+            paragraph = description.nth(text)
+            post_data['descricao'] = paragraph.inner_text()
 
-        for i in range(count):
-            post = cards.nth(i)
+        browser.close()
+        return post_data
 
-            try:
-                titulo = post.get_attribute("aria-label")
+def get_post_comments(url:str):
+    post_comments = {}
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
 
-                print(f"Post {i + 1}: {titulo}")
+        page.goto(url)
+        page.wait_for_timeout(5000) 
 
-                posts.append({
-                    "id": i + 1,
-                    "titulo": titulo,
-                    "subreddit": "saopaulo"
-                })
+        previous_scroll = -1
+        scroll_action = 0
 
-            except Exception as e:
-                print(f"Erro ao extrair post {i + 1}: {e}")
+        while True:
+            comment_section = page.locator("shreddit-comment")
+            count = comment_section.count()
 
-    browser.close()
+            if count == previous_scroll:
+                scroll_action += 1
+            else:
+                scroll_action = 0
+
+            if scroll_action >= 2:
+                break
+
+            previous_scroll = count 
+            page.mouse.wheel(0, 2000)
+            time.sleep(1)
+        
+        for i in range(comment_section.count()):
+                comment = comment_section.nth(i)
+                print(comment.inner_text())                
+        browser.close()
+
+url = 'https://www.reddit.com/r/saopaulo/comments/172eh8n/a_enel_funciona_muito_mal_na_sua_%C3%A1rea/'
+print(get_post_comments(url))
+# print(get_post_data(url))
