@@ -32,26 +32,31 @@ def get_post_comments(url:str):
         previous_scroll = -1
         scroll_action = 0
 
+        comment_section = page.locator("shreddit-comment")
+        count = comment_section.count()
         while True:
-            comment_section = page.locator("shreddit-comment")
-            count = comment_section.count()
 
-            if count == previous_scroll:
-                scroll_action += 1
-            else:
-                scroll_action = 0
+             if count == previous_scroll:
+                 scroll_action += 1
+             else:
+                 scroll_action = 0
 
-            if scroll_action >= 2:
-                break
+             if scroll_action >= 2:
+                 break
 
-            previous_scroll = count 
-            page.mouse.wheel(0, 2000)
-            time.sleep(1)
-        
+             previous_scroll = count 
+             page.mouse.wheel(0, 2000)
+             time.sleep(1)
+        comments = []
         for i in range(comment_section.count()):
                 comment = comment_section.nth(i)
-                print(comment.inner_text())                
+                ps = comment.locator('p').all_inner_texts()
+                comments.append(ps)
+        for comment in comments:
+            result = [comentario for texto in comments for comentario in texto]
+            post_comments['comentarios']=result
         browser.close()
+        return post_comments
 
 url = 'https://www.reddit.com/r/saopaulo/comments/172eh8n/a_enel_funciona_muito_mal_na_sua_%C3%A1rea/'
 print(get_post_comments(url))
