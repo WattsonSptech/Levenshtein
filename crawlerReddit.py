@@ -82,9 +82,6 @@ def get_post_comments(url: str, post_id: str) -> dict:
     return post_comments
 
 def filter_comments(post:dict)-> str:
-    palavras = []
-    for conteudo in post.items():
-        comentario = conteudo.get('comentarios',[])
-        for frase in comentario:
-            palavras.extend([caracter for caracter in frase])
-    return ''.join(palavras)
+    for chave, valor in post.items():
+        comentarios = valor.get('comentarios', [])
+        return comentarios

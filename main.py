@@ -62,14 +62,15 @@ def remove_caracteres_especiais(palavra: str) -> str:
     return unidecode(palavra)
 
 if __name__ == "__main__":
-    posts = get_posts_links('saopaulo', 'enel', 2)
+    posts = get_posts_links('saopaulo', 'enel', 1)
     for post_id, post_data in posts.items():
         link = post_data['link']
         comentarios = get_post_comments(link, post_id)
-        frase = filter_comments(comentarios)
-    
-        frase_filtrada = filtrar_frase(frase)
-        tokens = tokenizer(frase_filtrada)
-        sentimento = definir_sentimento(tokens)
-        sentimentos_por_frase.append({"frase": frase, "sentimento": sentimento})
-        print(sentimentos_por_frase)
+        frases = filter_comments(comentarios)
+        for indice,frase in enumerate(frases,start=1): 
+            print(frase,indice)  
+            frase_filtrada = filtrar_frase(frase)
+            tokens = tokenizer(frase_filtrada)
+            sentimento = definir_sentimento(tokens)
+            sentimentos_por_frase.append({"frase": frase, "sentimento": sentimento})
+            print(f"{indice:02d}. \"{frase}\" → Sentimento: {sentimento}")
