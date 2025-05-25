@@ -25,12 +25,7 @@ def get_posts_links(subreddit:str,query:str,limit:int)-> dict:
         permalink = post['data']['permalink']
         full_url = f"https://www.reddit.com{permalink}"
 
-        formatted_description = post_description.replace('\n', '')
-        formatted_description = formatted_description.replace('\\', '')
-        formatted_description = formatted_description.replace('-', '')
         response_body[post_id] = {
-            'titulo': post_tittle,
-            'descricao': formatted_description,
             'link': full_url
         }
     return response_body
@@ -71,3 +66,11 @@ def get_post_comments(url:str,post_id:str)-> dict:
         post_comments[post_id]['comentarios'] = result
         browser.close()
     return post_comments
+
+def filter_comments(post:dict)-> str:
+    palavras = []
+    for post_id, conteudo in post.items():
+        comentario = conteudo.get('comentarios',[])
+        for frase in comentario:
+            palavras.extend([caracter for caracter in frase])
+    return ''.join(palavras)
