@@ -5,7 +5,7 @@ PALAVRAS_BAIXO_CALAO = [
     "cacete", "imundo", "imunda", "arrombado", "idiota", "bunda", "fodase", "foda-se", "fudido",
     "lixo", "buceta", "pinto", "pau", "penis", "fuder", "ovo", "energumeno", "caguei",
     "fetido", "bossal", "boboca", "safado", "safada", "vadia", "piranha", "tonto", "tanso",
-    "panaca", "filho", "bolas"
+    "panaca", "filho", "bolas", "punheta", "punhetacao"
 ]
 
 ABREVIACOES = [
@@ -72,8 +72,7 @@ INTENSIFICADORES_NEGATIVOS = [
 PALAVRAS_BOAS = [
     "sim", "legal", "bom", "otimo", "otima", "excelente", "incrivel", "fantastico",
     "maravilhoso", "maravilhosa", "eficiente", "divertido", "divertida", "agradavel", "positivo",
-    "positiva", "impressionante", "top", "genial", "show", "confiavel", "surpreendente",
-    "brilhante"
+    "impressionante", "top", "genial", "show", "confiavel", "surpreendente", "brilhante"
 ]
 
 # Determinam sentimentos negativos
@@ -81,5 +80,8 @@ PALAVRAS_RUINS = [
     "ruim", "terrivel", "abominavel", "fraco", "inutil", "incompetencia",
     "horrivel", "pessimo", "pessima", "decepcionante", "lento", "mentiroso", "enganoso", 
     "insuportavel", "ridiculo", "ridicula", "desagradavel", "negativo", "negativa", "fracasso", "problematico",
-    "problematica", "demorado", "demorada", "mal", "mau", "descaso", "nao", "lamentavel"
+    "problematica", "demorado", "demorada", "mal", "mau", "descaso", "nao", "lamentavel", "horroroso", "horrorosa", "estresse",
+    "estresso", "maluco", "problema", "problemao", "problemasso", "probleminha", "precario", "precarizar", "precarizaram",
+    "precarizacao", "insustentavel", "triste", "tristeza", "chato", "chata", "inferno", "odio", "prejuizo", "desastre",
+    "nada", "culpa", "risco"
 ]

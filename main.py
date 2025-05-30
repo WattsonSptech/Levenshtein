@@ -18,10 +18,18 @@ def filtrar_frase(frase: str) -> list:
                 if letra in NUMEROS or letra in SIMBOLOS or letra in IMAGENS_EMOJIS:
                     palavra = palavra.replace(str(letra), '')
 
-        for palavra_proibida in PALAVRAS_NAO_UTILIZADAS:
-            if (levenshtein(palavra, palavra_proibida) <= (len(palavra_proibida) // 2)):
-                palavra = palavra_proibida
+        for item in PALAVRAS_BOAS + PALAVRAS_RUINS + INTENSIFICADORES_NEGATIVOS + INTENSIFICADORES_POSITIVOS + PALAVRAS_BAIXO_CALAO:
+            nota_levenshtein = levenshtein(palavra, item)
+            if (nota_levenshtein != 0 and nota_levenshtein < len(palavra) // 2):
+                print(f'Troca realizada: {palavra} -> {item}')
+                palavra = item
+            else:
+                pass
+            
+        if palavra not in PALAVRAS_NAO_UTILIZADAS:
+            lista_filtrada.append(palavra)
     
+    print(lista_filtrada)
     return lista_filtrada
 
 def tokenizer(palavras: list) -> list:
