@@ -6,10 +6,9 @@ from crawlerReddit import *
 sentimentos_por_frase = []
 
 def filtrar_frase(frase: str) -> list:
-
     palavras = frase.split(' ')
     lista_filtrada = []
-
+    
     for palavra in palavras:
 
         palavra = remove_caracteres_especiais(palavra.lower())
@@ -21,7 +20,7 @@ def filtrar_frase(frase: str) -> list:
         for item in PALAVRAS_BOAS + PALAVRAS_RUINS + INTENSIFICADORES_NEGATIVOS + INTENSIFICADORES_POSITIVOS + PALAVRAS_BAIXO_CALAO:
             nota_levenshtein = levenshtein(palavra, item)
             if (nota_levenshtein != 0 and nota_levenshtein < len(palavra) // 2):
-                print(f'Troca realizada: {palavra} -> {item}')
+                # print(f'Troca realizada: {palavra} -> {item}')
                 palavra = item
             else:
                 pass
@@ -29,7 +28,7 @@ def filtrar_frase(frase: str) -> list:
         if palavra not in PALAVRAS_NAO_UTILIZADAS:
             lista_filtrada.append(palavra)
     
-    print(lista_filtrada)
+    # print(lista_filtrada)
     return lista_filtrada
 
 def tokenizer(palavras: list) -> list:
@@ -71,23 +70,20 @@ def definir_sentimento(tokens: list) -> str:
 def remove_caracteres_especiais(palavra: str) -> str:
     return unidecode(palavra)
 
-if __name__ == "__main__":
-    
-    posts = get_posts_links('saopaulo', 'enel', 1)
-
+def analisar_setimento_comentarios(posts:dict):
     for post_id, post_data in posts.items():
         link = post_data['link']
         comentarios = get_post_comments(link, post_id)
         frases = filter_comments(comentarios)
-
-        for indice,frase in enumerate(frases,start=1): 
-            
+        for frase in frases:
             frase_filtrada = filtrar_frase(frase)
-
             tokens = tokenizer(frase_filtrada)
-
             sentimento = definir_sentimento(tokens)
-
             sentimentos_por_frase.append({"frase": frase, "sentimento": sentimento})
 
-            print(f"{indice:02d}. \"{frase}\" → Sentimento: {sentimento}\n")
+if __name__ == "__main__":
+    
+    posts = get_posts_links('saopaulo', 'enel',1)
+    analisar_setimento_comentarios(posts)
+
+
