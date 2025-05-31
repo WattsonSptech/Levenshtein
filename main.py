@@ -3,7 +3,6 @@ from palavras import *
 from levenshtein import levenshtein
 from crawlerReddit import *
 
-sentimentos_por_frase = []
 
 def filtrar_frase(frase: str) -> list:
     palavras = frase.split(' ')
@@ -28,7 +27,6 @@ def filtrar_frase(frase: str) -> list:
         if palavra not in PALAVRAS_NAO_UTILIZADAS:
             lista_filtrada.append(palavra)
     
-    # print(lista_filtrada)
     return lista_filtrada
 
 def tokenizer(palavras: list) -> list:
@@ -70,7 +68,11 @@ def definir_sentimento(tokens: list) -> str:
 def remove_caracteres_especiais(palavra: str) -> str:
     return unidecode(palavra)
 
-def analisar_setimento_comentarios(posts:dict):
+def analisar_setimento_comentarios(posts:dict) -> dict:
+    sentimentos_por_frase = {
+        'frase': [],
+        'sentimento': []
+    }
     for post_id, post_data in posts.items():
         link = post_data['link']
         comentarios = get_post_comments(link, post_id)
@@ -79,11 +81,20 @@ def analisar_setimento_comentarios(posts:dict):
             frase_filtrada = filtrar_frase(frase)
             tokens = tokenizer(frase_filtrada)
             sentimento = definir_sentimento(tokens)
-            sentimentos_por_frase.append({"frase": frase, "sentimento": sentimento})
+            if frase not in sentimentos_por_frase["frase"]:
+                sentimentos_por_frase['frase'].append(frase)
+                sentimentos_por_frase['sentimento'].append(sentimento)
+
+    return sentimentos_por_frase
 
 if __name__ == "__main__":
     
-    posts = get_posts_links('saopaulo', 'enel',1)
-    analisar_setimento_comentarios(posts)
+    posts = get_posts_links('saopaulo', 'enel',3)
+    lista = analisar_setimento_comentarios(posts)
+    for i in (range(len(lista['frase']))):
+        print(f'Frase: {lista["frase"][i]} -> Sentimento: {lista["sentimento"][i]}')
+            
+    
+    
 
 
