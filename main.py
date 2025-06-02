@@ -2,10 +2,12 @@ from unidecode import unidecode
 from palavras import *
 from levenshtein import levenshtein
 from crawlerReddit import *
-
+import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt 
 
 def filtrar_frase(frase: str) -> list:
-    palavras = frase.split(' ')
+    palavras = frase.split(' ') 
     lista_filtrada = []
     
     for palavra in palavras:
@@ -19,7 +21,7 @@ def filtrar_frase(frase: str) -> list:
         for item in PALAVRAS_BOAS + PALAVRAS_RUINS + INTENSIFICADORES_NEGATIVOS + INTENSIFICADORES_POSITIVOS + PALAVRAS_BAIXO_CALAO:
             nota_levenshtein = levenshtein(palavra, item)
             if (nota_levenshtein != 0 and nota_levenshtein < len(palavra) // 2):
-                # print(f'Troca realizada: {palavra} -> {item}')
+                print(f'Troca realizada: {palavra} -> {item}')
                 palavra = item
             else:
                 pass
@@ -68,7 +70,7 @@ def definir_sentimento(tokens: list) -> str:
 def remove_caracteres_especiais(palavra: str) -> str:
     return unidecode(palavra)
 
-def analisar_setimento_comentarios(posts:dict) -> dict:
+def analisar_sentimento_comentarios(posts:dict) -> dict:
     sentimentos_por_frase = {
         'frase': [],
         'sentimento': []
@@ -88,12 +90,22 @@ def analisar_setimento_comentarios(posts:dict) -> dict:
     return sentimentos_por_frase
 
 if __name__ == "__main__":
-    
-    posts = get_posts_links('saopaulo', 'enel',3)
-    lista = analisar_setimento_comentarios(posts)
+    df = pd.DataFrame()
+    posts = get_posts_links('saopaulo', 'enel',1)
+    lista = analisar_sentimento_comentarios(posts)
     for i in (range(len(lista['frase']))):
-        print(f'Frase: {lista["frase"][i]} -> Sentimento: {lista["sentimento"][i]}')
-            
+        df  = pd.DataFrame({'frase': lista["frase"], 'sentimento': lista["sentimento"]})
+        with open('frases.txt','w',encoding='utf-8') as f:
+             for i in range(len(lista['frase'])):
+                 f.write(f'{lista["frase"][i]}\n')
+    
+    with open('frases.txt','r',encoding='utf-8') as f:
+         text = f.read()
+    wordcloud = WordCloud(width=800, height=600, background_color='white', colormap='Set2', collocations=False).generate(text)
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    plt.show()
+    
     
     
 
