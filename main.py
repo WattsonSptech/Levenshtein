@@ -87,9 +87,11 @@ def analisar_sentimento_comentarios(posts:dict) -> dict:
             frase_filtrada = filtrar_frase(frase)
             tokens = tokenizer(frase_filtrada)
             sentimento = definir_sentimento(tokens)
-            if frase not in sentimentos_por_frase["frase"]:
-                sentimentos_por_frase['frase'].append(frase)
-                sentimentos_por_frase['sentimento'].append(sentimento)
+            for item in frase_filtrada:
+                frase = item
+                if frase not in sentimentos_por_frase["frase"]:
+                    sentimentos_por_frase['frase'].append(frase)
+                    sentimentos_por_frase['sentimento'].append(sentimento)
 
     return sentimentos_por_frase
 
