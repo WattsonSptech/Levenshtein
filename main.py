@@ -12,6 +12,8 @@ def filtrar_frase(frase: str) -> list:
     
     for palavra in palavras:
 
+        palavra_encontrada = False
+
         palavra = remove_caracteres_especiais(palavra.lower())
 
         for letra in palavra:
@@ -23,8 +25,10 @@ def filtrar_frase(frase: str) -> list:
             if (nota_levenshtein != 0 and nota_levenshtein < len(palavra) // 2):
                 print(f'Troca realizada: {palavra} -> {item}')
                 palavra = item
-            else:
-                pass
+                palavra_encontrada = True
+            
+        if not palavra_encontrada:
+            print("Lexema não reconhecido: ", palavra)
             
         if palavra not in PALAVRAS_NAO_UTILIZADAS:
             lista_filtrada.append(palavra)

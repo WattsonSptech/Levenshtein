@@ -2,10 +2,10 @@ from emojis import EMOJIS, IMAGENS_EMOJIS
 
 PALAVRAS_BAIXO_CALAO = [
     "merda", "porra", "caralho", "bosta", "cu", "puta", "desgraca", "viado", "corno",
-    "cacete", "imundo", "imunda", "arrombado", "idiota", "bunda", "fodase", "foda-se", "fudido",
+    "cacete", "imundo", "arrombado", "idiota", "bunda", "fodase", "fudido",
     "lixo", "buceta", "pinto", "pau", "penis", "fuder", "ovo", "energumeno", "caguei",
-    "fetido", "bossal", "boboca", "safado", "safada", "vadia", "piranha", "tonto", "tanso",
-    "panaca", "filho", "bolas", "punheta", "punhetacao"
+    "fetido", "bossal", "boboca", "safado", "vadia", "piranha", "tonto", "tanso",
+    "panaca", "filho", "bolas", "punheta"
 ]
 
 ABREVIACOES = [
