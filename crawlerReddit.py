@@ -11,7 +11,7 @@ def get_posts_links(subreddit: str, query: str, limit: int) -> dict:
         'restrict_sr': 'on',
         'sort': 'comments',
         't': 'all',
-        'limit': limit,
+        'limit': limit
     }
     try:
         response = requests.get(url, headers=headers, params=params)
@@ -38,7 +38,7 @@ def get_post_comments(url: str, post_id: str) -> dict:
             page.goto(url)
             page.wait_for_timeout(5000)
         except Exception as e:
-            print(f"An error occurred while trying to open the page: {e}")
+            print(f"Erro ao carregar a página: {e}")
             browser.close()
             return post_comments
 
@@ -81,7 +81,10 @@ def get_post_comments(url: str, post_id: str) -> dict:
         browser.close()
     return post_comments
 
-def filter_comments(post:dict)-> str:
-    for chave, valor in post.items():
-        comentarios = valor.get('comentarios', [])
-        return comentarios
+def filter_comments(post:dict)-> list[str]:
+    for key,item in post.items():
+        phrase = item['comentarios']
+        return phrase
+        
+        
+    
