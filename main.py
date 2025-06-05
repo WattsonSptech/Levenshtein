@@ -80,21 +80,23 @@ def remove_caracteres_especiais(palavra: str) -> str:
 def analisar_sentimento_comentarios(posts:dict) -> dict:
     sentimentos_por_frase = {
         'frase': [],
-        'sentimento': []
+        'sentimento': [],
+        'wordcloud': []
     }
+
     for post_id, post_data in posts.items():
         link = post_data['link']
         comentarios = get_post_comments(link, post_id)
         frases = filter_comments(comentarios)
         for frase in frases:
             frase_filtrada = filtrar_frase(frase)
+            sentimentos_por_frase['wordcloud'] += frase_filtrada
             tokens = tokenizer(frase_filtrada)
             sentimento = definir_sentimento(tokens)
-            for item in frase_filtrada:
-                frase = item
-                if frase not in sentimentos_por_frase["frase"]:
-                    sentimentos_por_frase['frase'].append(frase)
-                    sentimentos_por_frase['sentimento'].append(sentimento)
+
+            if frase not in sentimentos_por_frase["frase"]:
+                sentimentos_por_frase['frase'].append(frase)
+                sentimentos_por_frase['sentimento'].append(sentimento)
 
     return sentimentos_por_frase
 
@@ -104,12 +106,11 @@ if __name__ == "__main__":
     posts = get_posts_links('saopaulo', 'enel',1)
     lista = analisar_sentimento_comentarios(posts)
     df  = pd.DataFrame({'id': range(1,1+len(lista['frase'])),'frase': lista["frase"], 'sentimento': lista["sentimento"]})
-
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     txt_file = f'arquivos/txt/resultCrawler{timestamp}.txt'
     with open(txt_file,'x',encoding='utf-8') as f:
-        for i in range(len(lista['frase'])):
-            f.write(f'{lista["frase"][i]}\n')
+        for i in range(len(lista['wordcloud'])):
+            f.write(f'{lista["wordcloud"][i]}\n')
 
     csv_path = 'arquivos/csv/'
     csv_files = [os.path.join(csv_path, f) for f in os.listdir(csv_path) if os.path.isfile(os.path.join(csv_path, f))]
