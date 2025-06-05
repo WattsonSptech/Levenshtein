@@ -116,8 +116,8 @@ if __name__ == "__main__":
     recent_csv = ''
     if csv_files:
         recent_csv = max(csv_files, key=os.path.getctime)
-    df.to_csv(f'arquivos/csv/dataframe{timestamp}.csv', index=False, sep=';')
-    s3.upload_object(recent_csv,'comentarios.csv')
+        df.to_csv(f'arquivos/csv/dataframe{timestamp}.csv', index=False, sep=';')
+        s3.upload_object(recent_csv,'comentarios.csv')
 
     txt_path = 'arquivos/txt/'
     txt_files = [os.path.join(txt_path, f) for f in os.listdir(txt_path) if os.path.isfile(os.path.join(txt_path, f))]
