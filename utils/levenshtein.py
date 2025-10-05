@@ -1,4 +1,3 @@
-from pprint import pprint
 def levenshtein(palavra1, palavra2):
     n = len(palavra1)
     m = len(palavra2)
