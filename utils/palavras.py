@@ -1,4 +1,4 @@
-from emojis import EMOJIS, IMAGENS_EMOJIS
+from utils.emojis import EMOJIS, IMAGENS_EMOJIS
 
 PALAVRAS_BAIXO_CALAO = [
     "merda", "porra", "caralho", "bosta", "cu", "puta", "desgraca", "viado", "corno",
