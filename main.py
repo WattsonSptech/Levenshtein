@@ -72,4 +72,4 @@ def remove_caracteres_especiais(palavra: str) -> str:
     return unidecode(palavra)
 
 if __name__ == "__main__":
-    CrawlerReclameAqui().spider()
+    resultado = CrawlerReclameAqui().spider()
