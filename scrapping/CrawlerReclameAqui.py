@@ -65,7 +65,7 @@ class CrawlerReclameAqui:
                     if tags != "":
                         for li in tags:
                             a = li.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li/div/a")
-                            print("aqui >>>> ", str(a.get_property('href')))
+
                             if "?categoria=" in str(a.get_property('href')):
                                 categoria = a.text
                             elif "?produto=" in str(a.get_property('href')):
@@ -79,17 +79,17 @@ class CrawlerReclameAqui:
                     hora = data_hora[14:]
 
                     resultado.append({
-                        "url": url,
-                        "cidade": cidade,
-                        "uf": uf,
-                        "data": data,
-                        "hora": hora,
-                        "titulo": titulo,
-                        "reclamacao": reclamacao,
-                        "status": status,
-                        "categoria": categoria,
-                        "tipo_produto": tipo_produto,
-                        "tipo_problema": tipo_problema
+                        "URL": url,
+                        "CIDADE": cidade,
+                        "UF": uf,
+                        "DATA": data,
+                        "HORA": hora,
+                        "TITULO": titulo,
+                        "RECLAMACAO": reclamacao,
+                        "STATUS": status,
+                        "CATEGORIA": categoria,
+                        "TIPO_PRODUTO": tipo_produto,
+                        "TIPO_PROBLEMA": tipo_problema
                     })  
 
                 except TimeoutException as e:

@@ -1,78 +1,20 @@
-from unidecode import unidecode
-from utils.palavras import *
-from utils.levenshtein import levenshtein
+
 from scrapping.CrawlerReclameAqui import CrawlerReclameAqui
-
-sentimentos_por_frase = []
-
-def filtrar_frase(frase: str) -> list:
-
-    palavras = frase.split(' ')
-    lista_filtrada = []
-
-    for palavra in palavras:
-
-        palavra = remove_caracteres_especiais(palavra.lower())
-
-        for letra in palavra:
-                if letra in NUMEROS or letra in SIMBOLOS or letra in IMAGENS_EMOJIS:
-                    palavra = palavra.replace(str(letra), '')
-
-        for item in PALAVRAS_BOAS + PALAVRAS_RUINS + INTENSIFICADORES_NEGATIVOS + INTENSIFICADORES_POSITIVOS + PALAVRAS_BAIXO_CALAO:
-            nota_levenshtein = levenshtein(palavra, item)
-            if (nota_levenshtein != 0 and nota_levenshtein < len(palavra) // 2):
-                print(f'Troca realizada: {palavra} -> {item}')
-                palavra = item
-            else:
-                pass
-            
-        if palavra not in PALAVRAS_NAO_UTILIZADAS:
-            lista_filtrada.append(palavra)
-    
-    print(lista_filtrada)
-    return lista_filtrada
-
-def tokenizer(palavras: list) -> list:
-    tokens = []
-
-    for palavra in palavras:
-        if palavra in PALAVRAS_BOAS:
-            tokens.append((palavra, "PSTV"))
-        elif palavra in PALAVRAS_RUINS:
-            tokens.append((palavra, "NGTV"))
-        elif palavra in INTENSIFICADORES_NEGATIVOS + INTENSIFICADORES_POSITIVOS:
-             tokens.append((palavra, "MULT"))
-        else:
-             tokens.append((palavra, "NULL"))
-
-    return tokens
-
-def definir_sentimento(tokens: list) -> str:
-    multiplicador = 1.0
-    pontos = 0
-
-    for token in tokens:
-        if token[1] == "PSTV":
-            pontos = pontos + 1 * multiplicador
-            multiplicador = 1.0
-        elif token[1] == "NGTV":
-            pontos = pontos + (-1 * multiplicador)
-            multiplicador = 1.0
-        elif token[1] == "MULT":
-            multiplicador += 1
-
-    if (pontos == 0):
-        return "Neutro"
-    elif (pontos > 0): 
-        return "Positivo"
-    else:
-        return "Negativo"
-
-def remove_caracteres_especiais(palavra: str) -> str:
-    return unidecode(palavra)
+from utils.Utils import Utils
+from utils.AnalisadorLexico import AnalisadorLexico
 
 if __name__ == "__main__":
-    resultado = CrawlerReclameAqui().crawler()
 
-    for i in resultado:
-        print(f"{i}\n")
+    al = AnalisadorLexico()
+
+    result = CrawlerReclameAqui().crawler()
+    
+    for item in result:
+        filtered_list = al.filtrar_frase(item['RECLAMACAO'])
+        tokens = al.tokenizer(filtered_list)
+        emotion = al.definir_sentimento(tokens)
+        item['SENTIMENTO_FRASE'] = emotion
+
+    print(result)
+
+    Utils().from_dict_list_to_csv_file(result)
