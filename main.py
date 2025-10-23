@@ -5,7 +5,10 @@ from utils.AnalisadorLexico import AnalisadorLexico
 
 if __name__ == "__main__":
 
+    print("Iniciando programa...")
+
     al = AnalisadorLexico()
+    utils = Utils()
 
     result = CrawlerReclameAqui().crawler()
     
@@ -15,6 +18,6 @@ if __name__ == "__main__":
         emotion = al.definir_sentimento(tokens)
         item['SENTIMENTO_FRASE'] = emotion
 
-    print(result)
+    utils.from_dict_list_to_csv_file(result)
 
-    Utils().from_dict_list_to_csv_file(result)
+    print("Programa finalizado!")

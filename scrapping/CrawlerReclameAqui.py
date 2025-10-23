@@ -2,7 +2,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException, NoSuchDriverException, StaleElementReferenceException
 import undetected_chromedriver as uc
 import dotenv
-import logging as log
 class CrawlerReclameAqui:
 
     def __init__(self):
@@ -12,11 +11,10 @@ class CrawlerReclameAqui:
     def config(self):
         try:
             chrome_driver = uc.Chrome()
-            chrome_driver.options.add_argument('--headless')
         except NoSuchDriverException as e:
-            log.exception(f'Driver não encontrado: {e}')
+            print(f'Driver não encontrado: {e}')
         except Exception as e:
-            log.exception(f'Erro ao definir driver: {e}')
+            print(f'Erro ao definir driver: {e}')
         return chrome_driver
     
     def get_complaints_urls(self):
@@ -48,7 +46,7 @@ class CrawlerReclameAqui:
                         try:
                             tags = self.driver.find_elements(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li")
                         except NoSuchElementException as e:
-                            log.exception(f'Elemento HTML não encontrado: {e}')
+                            print(f'Elemento HTML não encontrado: {e}')
 
                     except StaleElementReferenceException as e:
                         titulo = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/h1").text
@@ -60,7 +58,7 @@ class CrawlerReclameAqui:
                         try:
                             tags = self.driver.find_elements(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li")
                         except NoSuchElementException as e:
-                            log.exception(f'Elemento HTML não encontrado: {e}') 
+                            print(f'Elemento HTML não encontrado: {e}') 
                     
                     if tags != "":
                         for li in tags:
@@ -93,12 +91,12 @@ class CrawlerReclameAqui:
                     })  
 
                 except TimeoutException as e:
-                   log.exception(f'Erro ao visitar url {url}: {e}')
+                   print(f'Erro ao visitar url {url}: {e}')
                 except WebDriverException as e:
-                    log.exception(f'Erro no Webdriver: {e}')
+                    print(f'Erro no Webdriver: {e}')
                 
         except Exception as e:
-            log.exception('Exception: ', e)
+            print('Exception: ', e)
 
         self.driver.close()
         self.driver.quit()
@@ -107,5 +105,5 @@ class CrawlerReclameAqui:
     def crawler(self):
         self.driver.get("https://www.reclameaqui.com.br/empresa/aes-eletropaulo/lista-reclamacoes")
         urls = self.get_complaints_urls()
-        print("Finalizado!")
+        print("Scrapping Finalizado!")
         return self.get_elements(urls)
