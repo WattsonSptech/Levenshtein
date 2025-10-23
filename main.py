@@ -2,6 +2,7 @@
 from scrapping.CrawlerReclameAqui import CrawlerReclameAqui
 from utils.Utils import Utils
 from utils.AnalisadorLexico import AnalisadorLexico
+import os
 
 if __name__ == "__main__":
 
@@ -18,6 +19,7 @@ if __name__ == "__main__":
         emotion = al.definir_sentimento(tokens)
         item['SENTIMENTO_FRASE'] = emotion
 
-    utils.from_dict_list_to_csv_file(result)
+    file_path = utils.from_dict_list_to_csv_file(result)
+    utils.send_to_s3(file_path, os.getenv("BUCKET_NAME", None))
 
     print("Programa finalizado!")

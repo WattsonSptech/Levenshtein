@@ -1,6 +1,7 @@
 from unidecode import unidecode
 import pandas as pd
 from datetime import date
+import boto3
 
 class Utils:
 
@@ -18,6 +19,19 @@ class Utils:
 
         try: 
             df = pd.DataFrame(data)
-            df.to_csv(f"temp/ReclameAqui_Raw_{ano}{mes}{dia}.csv", ";")
+            path = f"temp/ReclameAqui_Raw_{ano}{mes}{dia}.csv"
+            df.to_csv(path, ";")
+            return path
         except Exception as e:
             print(f"Erro: {e}")
+    
+    def send_to_s3(self, file_path, bucket_name):
+        print(f'Enviando arquivo para o bucket {bucket_name}')
+        try:
+            s3 = boto3.client('s3')
+            file_name = file_path.split("/")[-1]
+            s3.upload_file(file_path, bucket_name, file_name)
+            print('Arquivo enviado para a S3!')
+        except Exception as e:
+            print(f'Erro ao enviar arquivo para a S3: {e}') 
+        

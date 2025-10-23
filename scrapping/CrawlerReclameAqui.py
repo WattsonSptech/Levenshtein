@@ -1,11 +1,9 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException, NoSuchDriverException, StaleElementReferenceException
 import undetected_chromedriver as uc
-import dotenv
 class CrawlerReclameAqui:
 
     def __init__(self):
-        dotenv.load_dotenv()       
         self.driver = self.config()
 
     def config(self):
