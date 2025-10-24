@@ -9,11 +9,11 @@ class CrawlerReclameAqui:
     def config(self):
         try:
             chrome_driver = uc.Chrome()
+            return chrome_driver
         except NoSuchDriverException as e:
             print(f'Driver não encontrado: {e}')
         except Exception as e:
             print(f'Erro ao definir driver: {e}')
-        return chrome_driver
     
     def get_complaints_urls(self):
         links = self.driver.find_elements(By.ID, "site_bp_lista_ler_reclamacao")
