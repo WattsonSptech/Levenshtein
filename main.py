@@ -20,6 +20,6 @@ if __name__ == "__main__":
         item['SENTIMENTO_FRASE'] = emotion
 
     file_path = utils.from_dict_list_to_csv_file(result)
-    utils.send_to_s3(file_path, os.getenv("BUCKET_NAME", None))
+    utils.send_to_s3(file_path, os.getenv("BUCKET_NAME_RAW", None))
 
     print("Programa finalizado!")
