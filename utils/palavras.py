@@ -1,4 +1,4 @@
-from emojis import EMOJIS, IMAGENS_EMOJIS
+from utils.emojis import IMAGENS_EMOJIS
 
 PALAVRAS_BAIXO_CALAO = [
     "merda", "porra", "caralho", "bosta", "cu", "puta", "desgraca", "viado", "corno",
@@ -54,10 +54,6 @@ CONECTIVOS = [
 
 PALAVRAS_NAO_UTILIZADAS = IMAGENS_EMOJIS + PRONOMES + PALAVRAS_BAIXO_CALAO + ABREVIACOES + VAZIO + SIMBOLOS + NUMEROS + PREPOSICOES + ARTIGOS + CONECTIVOS
 
-# Caso a palavra seja um intensificador, deve aumentar o valor da variável 'multiplicador' do arquivo main em +1
-# exemplos:
-# "muito bom" -> multiplicador = 2x
-
 INTENSIFICADORES_POSITIVOS = [
     "muito", "bastante", "extremamente", "totalmente", "completamente",
     "super", "demais", "intensamente", "altamente", "notavelmente", "bem" 
@@ -68,14 +64,12 @@ INTENSIFICADORES_NEGATIVOS = [
     "moderadamente", "vagamente", "apenas", "parcialmente", "limitadamente"
 ]
 
-# Determinam sentimentos positivos
 PALAVRAS_BOAS = [
     "sim", "legal", "bom", "otimo", "otima", "excelente", "incrivel", "fantastico",
     "maravilhoso", "maravilhosa", "eficiente", "divertido", "divertida", "agradavel", "positivo",
     "impressionante", "top", "genial", "show", "confiavel", "surpreendente", "brilhante"
 ]
 
-# Determinam sentimentos negativos
 PALAVRAS_RUINS = [
     "ruim", "terrivel", "abominavel", "fraco", "inutil", "incompetencia",
     "horrivel", "pessimo", "pessima", "decepcionante", "lento", "mentiroso", "enganoso", 
