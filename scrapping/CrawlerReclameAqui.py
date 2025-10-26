@@ -1,17 +1,26 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, WebDriverException, NoSuchElementException, NoSuchDriverException, StaleElementReferenceException
 import undetected_chromedriver as uc
+from undetected_chromedriver.options import ChromeOptions
 class CrawlerReclameAqui:
 
     def __init__(self):
         self.driver = self.config()
 
     def config(self):
+
         try:
-            chrome_driver = uc.Chrome()
+            options = ChromeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            chrome_driver = uc.Chrome(options=options, driver_executable_path="/usr/bin/chromedriver")
             return chrome_driver
+        
         except NoSuchDriverException as e:
             print(f'Driver não encontrado: {e}')
+
         except Exception as e:
             print(f'Erro ao definir driver: {e}')
     
