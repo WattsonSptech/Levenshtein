@@ -15,7 +15,7 @@ class CrawlerReclameAqui:
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--disable-gpu")
-            chrome_driver = uc.Chrome(options=options, driver_executable_path="/usr/local/bin/chromedriver")
+            chrome_driver = uc.Chrome(options=options, driver_executable_path="/home/ubuntu/drivers/chromedriver")
             return chrome_driver
         
         except NoSuchDriverException as e:
