@@ -3,8 +3,11 @@ from scrapping.CrawlerReclameAqui import CrawlerReclameAqui
 from utils.Utils import Utils
 from utils.AnalisadorLexico import AnalisadorLexico
 import os
+from dotenv import load_dotenv
 
 if __name__ == "__main__":
+
+    load_dotenv()
 
     print("Iniciando programa...")
 

@@ -2,6 +2,7 @@ from unidecode import unidecode
 import pandas as pd
 from datetime import date
 import boto3
+import os
 
 class Utils:
 
@@ -19,6 +20,10 @@ class Utils:
 
         try: 
             df = pd.DataFrame(data)
+
+            if(not os.path.isdir("temp")):
+                os.mkdir("temp")
+
             path = f"temp/ReclameAqui_Raw_{ano}{mes}{dia}.csv"
             df.to_csv(path, ";")
             return path
