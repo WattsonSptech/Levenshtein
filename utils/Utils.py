@@ -20,7 +20,9 @@ class Utils:
 
         try: 
             df = pd.DataFrame(data)
-            path = f"temp/ReclameAqui_Raw_{ano}{mes}{dia}.csv"
+            if not os.path.exists("./temp"):
+                os.mkdir("./temp")
+            path = f"./temp/ReclameAqui_Raw_{ano}{mes}{dia}.csv"
             df.to_csv(path, ";")
             return path
         except Exception as e:
