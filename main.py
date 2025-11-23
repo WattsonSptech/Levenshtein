@@ -1,27 +1,36 @@
-import os
-import nltk
-from scrapping.CrawlerReclameAqui import CrawlerReclameAqui
-from utils.ProcessadorLN import ProcessadorLN
-from utils.Utils import Utils
-from utils.AnalisadorLexico import AnalisadorLexico
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
+from scrapping.CrawlerReclameAqui import CrawlerReclameAqui
+from utils import Utils, ProcessadorLN
 
-if __name__ == "__main__":
-
+def analisar_reclamacoes():
     load_dotenv()
-    nltk.download('stopwords')
-
     print("Iniciando programa...")
 
+    print("\nIniciando scrapping...")    
+    dados_extracts = CrawlerReclameAqui().crawler()
+
+    print("\nPreparando processamento de LN...")
+    process_ln = ProcessadorLN()
+
+    print("\nAvaliando as reclamações extraídas...")
+    reclams_avaliadas = []
+    for dado in dados_extracts:
+        datahora = datetime.strptime(f"{dado['DATA']} {dado['HORA']}", "%d/%m/%Y %H:%M")
+        datahora = datahora.replace(tzinfo=ZoneInfo("America/Sao_Paulo")).isoformat()
+
+        reclam = dado["RECLAMACAO"]
+        reclam_limpa = " ".join(process_ln.tokenizar(reclam))
+        avaliacao = process_ln.avaliar_sentenca(reclam_limpa)
+
+        reclams_avaliadas.append({"Data-hora": datahora, "Avaliação": avaliacao, "Reclamação": reclam})
+
+    print("\nPersistindo resultados...")
     utils = Utils()
-
-    result = CrawlerReclameAqui().crawler()
-    
-    processador = ProcessadorLN()
-    for item in result:
-        processador.limpar_conectivos(item["RECLAMACAO"])
-
-    file_path = utils.from_dict_list_to_csv_file(result)
-    # utils.send_to_s3(file_path, os.getenv("BUCKET_NAME_RAW", None))
-
+    file_path = utils.save_to_file(reclams_avaliadas)
+    utils.send_to_s3(file_path)
     print("Programa finalizado!")
+
+if __name__ == "__main__":
+    analisar_reclamacoes()

@@ -19,9 +19,11 @@ class CrawlerReclameAqui:
         
         except NoSuchDriverException as e:
             print(f'Driver não encontrado: {e}')
+            raise e
 
         except Exception as e:
             print(f'Erro ao definir driver: {e}')
+            raise e
     
     def get_complaints_urls(self):
         links = self.driver.find_elements(By.ID, "site_bp_lista_ler_reclamacao")
@@ -32,77 +34,77 @@ class CrawlerReclameAqui:
         base_path = "/html/body/div[@id='__next']/div[2]/div/div/main/div/div[2]/div[1]/div[1]"
         resultado = []
 
-        try:
-            for url in url_list:
+        for url in url_list:
+            try: 
+                print(f"\t• Visitando url: {url}")
+                self.driver.get(url)
+                self.driver.implicitly_wait(5)
+
+                tags = ""
+                categoria = tipo_produto = tipo_problema = "NAO INFORMADO"
+
                 try: 
-                    print(f"Visitando url: {url}")
-                    self.driver.get(url)
-                    self.driver.implicitly_wait(5)
-
-                    tags = ""
-                    categoria = tipo_produto = tipo_problema = "NAO INFORMADO"
-
-                    try: 
-                        titulo = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/h1").text
-                        cidade_uf = (self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[1]/span").text).split('-')
-                        data_hora = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[2]/span").text
-                        reclamacao = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/p").text
-                        status = self.driver.find_element(By.XPATH, f"{base_path}/div[2]/div/span").text
-                        
-                        try:
-                            tags = self.driver.find_elements(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li")
-                        except NoSuchElementException as e:
-                            print(f'Elemento HTML não encontrado: {e}')
-
-                    except StaleElementReferenceException as e:
-                        titulo = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/h1").text
-                        cidade_uf = (self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[1]/span").text).split('-')
-                        data_hora = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[2]/span").text
-                        reclamacao = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/p").text
-                        status = self.driver.find_element(By.XPATH, f"{base_path}/div[2]/div/span").text
-
-                        try:
-                            tags = self.driver.find_elements(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li")
-                        except NoSuchElementException as e:
-                            print(f'Elemento HTML não encontrado: {e}') 
+                    titulo = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/h1").text
+                    cidade_uf = (self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[1]/span").text).split('-')
+                    data_hora = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[2]/span").text
+                    reclamacao = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/p").text
+                    status = self.driver.find_element(By.XPATH, f"{base_path}/div[2]/div/span").text
                     
-                    if tags != "":
-                        for li in tags:
-                            a = li.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li/div/a")
+                    try:
+                        tags = self.driver.find_elements(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li")
+                    except NoSuchElementException as e:
+                        print(f'Elemento HTML não encontrado: {e}')
+                        raise e
 
-                            if "?categoria=" in str(a.get_property('href')):
-                                categoria = a.text
-                            elif "?produto=" in str(a.get_property('href')):
-                                tipo_produto = a.text
-                            elif "?problema=" in str(a.get_property('href')):
-                                tipo_problema = a.text
+                except StaleElementReferenceException as e:
+                    titulo = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/h1").text
+                    cidade_uf = (self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[1]/span").text).split('-')
+                    data_hora = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/section/div[2]/span").text
+                    reclamacao = self.driver.find_element(By.XPATH, f"{base_path}/div[3]/p").text
+                    status = self.driver.find_element(By.XPATH, f"{base_path}/div[2]/div/span").text
 
-                    cidade = cidade_uf[0].strip()
-                    uf = cidade_uf[1].strip()
-                    data = data_hora[0:10]
-                    hora = data_hora[14:]
+                    try:
+                        tags = self.driver.find_elements(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li")
+                    except NoSuchElementException as e:
+                        print(f'Elemento HTML não encontrado: {e}')
+                        raise e
+                    
+                if tags != "":
+                    for li in tags:
+                        a = li.find_element(By.XPATH, f"{base_path}/div[3]/div[1]/div/ul/li/div/a")
 
-                    resultado.append({
-                        "URL": url,
-                        "CIDADE": cidade,
-                        "UF": uf,
-                        "DATA": data,
-                        "HORA": hora,
-                        "TITULO": titulo,
-                        "RECLAMACAO": reclamacao,
-                        "STATUS": status,
-                        "CATEGORIA": categoria,
-                        "TIPO_PRODUTO": tipo_produto,
-                        "TIPO_PROBLEMA": tipo_problema
-                    })  
+                        if "?categoria=" in str(a.get_property('href')):
+                            categoria = a.text
+                        elif "?produto=" in str(a.get_property('href')):
+                            tipo_produto = a.text
+                        elif "?problema=" in str(a.get_property('href')):
+                            tipo_problema = a.text
 
-                except TimeoutException as e:
-                   print(f'Erro ao visitar url {url}: {e}')
-                except WebDriverException as e:
-                    print(f'Erro no Webdriver: {e}')
-                
-        except Exception as e:
-            print('Exception: ', e)
+                cidade = cidade_uf[0].strip()
+                uf = cidade_uf[1].strip()
+                data = data_hora[0:10]
+                hora = data_hora[14:]
+
+                resultado.append({
+                    "URL": url,
+                    "CIDADE": cidade,
+                    "UF": uf,
+                    "DATA": data,
+                    "HORA": hora,
+                    "TITULO": titulo,
+                    "RECLAMACAO": reclamacao,
+                    "STATUS": status,
+                    "CATEGORIA": categoria,
+                    "TIPO_PRODUTO": tipo_produto,
+                    "TIPO_PROBLEMA": tipo_problema
+                })  
+
+            except TimeoutException as e:
+                print(f'Erro ao visitar url {url}: {e}')
+                raise e
+            except WebDriverException as e:
+                print(f'Erro no Webdriver: {e}')
+                raise e
 
         self.driver.close()
         self.driver.quit()
@@ -111,5 +113,4 @@ class CrawlerReclameAqui:
     def crawler(self):
         self.driver.get("https://www.reclameaqui.com.br/empresa/aes-eletropaulo/lista-reclamacoes")
         urls = self.get_complaints_urls()
-        print("Scrapping Finalizado!")
         return self.get_elements(urls)
