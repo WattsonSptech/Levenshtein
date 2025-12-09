@@ -14,7 +14,7 @@ class AnalisadorLexico:
 
         for palavra in palavras:
 
-            palavra = self.utils.to_ascii_string(palavra.lower())
+            palavra = self.utils.unidecode(palavra.lower())
 
             for letra in palavra:
                 if letra in NUMEROS or letra in SIMBOLOS or letra in IMAGENS_EMOJIS:

@@ -1,38 +1,30 @@
-from unidecode import unidecode
+from datetime import datetime
+from abc import ABC
 import pandas as pd
-from datetime import date
 import boto3
 import os
 
-class Utils:
-
-    def __init__(self):
-        pass
-
-    def to_ascii_string(self, palavra: str) -> str:
-        return unidecode(palavra)
+class Utils(ABC):
     
-    def from_dict_list_to_csv_file(self, data: dict) -> None:
-        
-        ano = date.today().year
-        mes = date.today().month
-        dia = date.today().day
+    @staticmethod
+    def save_to_file(analises: list[dict]) -> str:
+        if not os.path.exists("./temp"):
+            os.mkdir("./temp")
 
-        try: 
-            df = pd.DataFrame(data)
-            path = f"temp/ReclameAqui_Raw_{ano}{mes}{dia}.csv"
-            df.to_csv(path, ";")
-            return path
-        except Exception as e:
-            print(f"Erro: {e}")
+        path = "./temp/ReclameAqui_Raw_{}.csv".format(datetime.now().strftime("%Y-%m-%d"))
+        pd.DataFrame.from_records(analises).to_csv(path, sep=";", index=False)
+        return path
     
-    def send_to_s3(self, file_path, bucket_name):
+    @staticmethod
+    def send_to_s3(file_path):
+        bucket_name = os.getenv("BUCKET_NAME_RAW", None)
+        if bucket_name is None:
+            print("Não foi definido um nome de bucket para onde enviar o arquivo gerado! Pulando...")
+            return
+
         print(f'Enviando arquivo para o bucket {bucket_name}')
-        try:
-            s3 = boto3.client('s3')
-            file_name = file_path.split("/")[-1]
-            s3.upload_file(file_path, bucket_name, file_name)
-            print('Arquivo enviado para a S3!')
-        except Exception as e:
-            print(f'Erro ao enviar arquivo para a S3: {e}') 
-        
+    
+        s3 = boto3.client('s3')
+        file_name = file_path.split("/")[-1]
+        s3.upload_file(file_path, bucket_name, file_name)
+        print('Arquivo enviado para a S3!')
